@@ -336,3 +336,78 @@ body > :not(.full.height, .hamerschlag-template) {
   --focus-state-bg-color: transparent;
   --focus-state-text-color: currentcolor;
 }
+
+/* Forgejo's footer bar goes away, so the page ends with the CMU footer. Its
+   language menu moves to the top right of the red roof, where CMU's sites put
+   their language switcher. It can't move in the markup, so it's placed there:
+   tied to the roof where the browser has anchor positioning, otherwise at the
+   roof's height (2.4375em wide, 3.375em on phones, as of main.6.7). The rest
+   of the bar (Licenses, API, custom footer links) is hidden; link those from
+   your own pages if you need them. */
+.hamerschlag-template .roof {
+  anchor-name: --hamerschlag-roof;
+}
+.page-footer {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: none !important;
+}
+.page-footer .left-links,
+.page-footer .right-links > :not(.language) {
+  display: none !important;
+}
+.page-footer .ui.dropdown.language {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  right: var(--page-margin-x);
+  display: flex;
+  align-items: center;
+  height: 2.4375rem;
+  font-size: medium;
+  color: #fff;
+}
+@media (max-width: 767.98px) {
+  .page-footer .ui.dropdown.language {
+    height: 3.375rem;
+  }
+  /* On phones the wordmark fills the roof: just the globe, with the language
+     name still read out by screen readers */
+  .page-footer .ui.dropdown.language > .flex-text-inline {
+    font-size: 0;
+  }
+  .page-footer .ui.dropdown.language > .flex-text-inline .svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+@supports (anchor-name: --a) {
+  .page-footer .ui.dropdown.language {
+    position-anchor: --hamerschlag-roof;
+    top: anchor(top);
+    height: anchor-size(height);
+  }
+}
+.page-footer .ui.dropdown.language > .flex-text-inline,
+.page-footer .ui.dropdown.language > .flex-text-inline .svg {
+  color: #fff;
+}
+.page-footer .ui.dropdown.language:is(:hover, :focus-visible) > .flex-text-inline {
+  text-decoration: underline;
+}
+.page-footer .ui.dropdown.language:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+/* It opens down from the roof, not up from the bottom of the page */
+.page-footer .ui.upward.dropdown.language > .menu {
+  top: 100% !important;
+  bottom: auto !important;
+  right: 0 !important;
+  left: auto !important;
+  max-height: 70vh;
+  overflow-y: auto;
+  font-size: 0.875rem;
+}
