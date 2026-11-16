@@ -9,7 +9,11 @@ Kilt's colors, corners, font and labels for Forgejo's own pages.
 Your site keeps its own name, the one you set as `APP_NAME`. The theme never
 shows its own name on your site.
 
-See it on the demo: https://hamerschlag.andrew.cmu.edu/
+It's named for Hamerschlag Hall: "Hammerschlag" is German for a hammer strike,
+which suits a theme for Forgejo, whose name means "forge" in Esperanto.
+
+The service description is at https://hamerschlag.andrew.cmu.edu/, and the
+demo at https://hamerschlag.andrew.cmu.edu/demo/.
 
 ![An issue in Forgejo with the CMU header.](images/issue.png)
 
@@ -99,12 +103,8 @@ Check these against every Forgejo update.
 
 ## Set Up With an AI Agent
 
-Copy this into an AI coding agent that can reach your Forgejo server, and it
-installs the theme:
-
-```text
-Install the Hamerschlag theme on this Forgejo instance. Download the latest release of https://github.com/cmu-web/cmu-web-hamerschlag and copy its custom/public, custom/templates and custom/options folders into the instance's custom folder (CustomPath, often /var/lib/forgejo/custom, or /var/lib/gitea/custom in the container), and stop to ask before overwriting any file the instance already has there. In app.ini, keep the site's own APP_NAME (the theme shows it as the site's name and never names itself), add hamerschlag to [ui] THEMES and set DEFAULT_THEME = hamerschlag; under [other], set SHOW_FOOTER_POWERED_BY and SHOW_FOOTER_VERSION to false. If the site wants a line under its name or its own footer address, edit custom/templates/custom/hamerschlag/site_line.tmpl or address.tmpl. Restart Forgejo. Then compare the instance's Forgejo version with FORGEJO in the release's scripts/build.mjs: if they differ, check that custom/header.tmpl, custom/body_inner_pre.tmpl and custom/footer.tmpl are still empty extension points in that version, and rebuild the labels with node scripts/build.mjs after setting FORGEJO to the instance's version, or remove custom/options and keep Forgejo's own labels.
-```
+The prompt for an AI coding agent is on the service description:
+https://hamerschlag.andrew.cmu.edu/#agent (its source is `site/index.html`).
 
 ## Update the Kilt or Forgejo
 
@@ -123,9 +123,10 @@ Edit `src/`, never `custom/`, then rebuild. Commit both, so an admin can copy
 
 ## Demo
 
-https://hamerschlag.andrew.cmu.edu/ runs Forgejo with the theme and made-up
-people and projects. Like any site running the theme, it goes by its own name,
-Forgejo, with "A Hamerschlag theme demo" under it (`demo/templates`). It's thrown away and rebuilt on every deploy from this
+https://hamerschlag.andrew.cmu.edu/demo/ runs Forgejo with the theme and
+made-up people and projects. Like any site running the theme, it goes by its
+own name, "Forgejo Hamerschlag Theme Demo," with "Hammer Strike" under it
+(`demo/templates`). It's thrown away and rebuilt on every deploy from this
 repository: `demo/app.ini` holds its settings and `demo/seed.mjs` its people
 (Andrew Carnegie, Margaret Morrison and Andrew Mellon), repositories, issues,
 a pull request and a release.
@@ -134,16 +135,20 @@ Nobody signs in. Forgejo's sign-in, sign-ups, SSH, mail, federation and
 Actions are off; the seed works through a one-time admin token. The web
 server in front also blocks the sign-in pages and everything but reading and
 cloning: only GET and HEAD reach Forgejo, plus git's `upload-pack` for
-clones. The demo uses `demo/theme-hamerschlag-demo.css`, the theme without
+clones. It serves the service description at the site's root and passes
+`/demo/` to Forgejo with the prefix taken off. The demo uses `demo/theme-hamerschlag-demo.css`, the theme without
 its Sign In links.
 
 ### Run It Locally
 
-`dev/run.sh` runs the demo in Docker on 127.0.0.1:
+`dev/run.sh` runs the demo in Docker on 127.0.0.1, and `dev/site.sh` builds
+the service description with a local Jekyll & Plaid checkout:
 
 ```sh
-dev/run.sh up      # http://127.0.0.1:3700/
+dev/site.sh        # builds site/_site
+dev/run.sh up
 dev/run.sh seed
+dev/run.sh serve   # http://127.0.0.1:3710/ and the demo at /demo/
 dev/run.sh refresh # after node scripts/build.mjs
 dev/run.sh down
 dev/run.sh reset   # throw the data away
@@ -175,6 +180,14 @@ password for `ac00`). The hosted demo never uses it. Data stays in
   `src/theme-hamerschlag.css` when the template changes.
 - **No menu in the roof.** The template's search and site menu aren't used;
   Forgejo's menu bar does that job.
+
+## Service Description and Releases
+
+`site/` is the service description, built with
+[Jekyll & Plaid](https://jekyllandplaid.andrew.cmu.edu/). On a version tag,
+`.github/workflows/release.yml` attaches the theme as
+`hamerschlag-<version>.zip` and the built site as `site.tar.gz` to the
+release.
 
 ## License
 

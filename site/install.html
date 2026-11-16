@@ -1,0 +1,98 @@
+---
+layout: sections
+title: Install
+description: Install Hamerschlag on a Forgejo site, set its name and recheck it on Forgejo updates.
+nav_order: 1
+---
+<div class="content wide">
+  <div>
+    <h1>Install Hamerschlag</h1>
+    <p class="cmu-lead">
+      You need a Forgejo admin's access to its custom folder (<code>CustomPath</code>, often
+      <code>/var/lib/forgejo/custom</code> or, in the container, <code>/var/lib/gitea/custom</code>).
+    </p>
+    <ol class="cmu-steps">
+      <li>
+        Download the
+        <a class="external" href="https://github.com/cmu-web/cmu-web-hamerschlag/releases/latest"
+          >latest release</a
+        >
+        and copy its <code>custom/public</code>, <code>custom/templates</code> and
+        <code>custom/options</code> into Forgejo's custom folder.
+      </li>
+      <li>
+        In <code>app.ini</code>, keep your site's name, add the theme, make it the default and hide
+        Forgejo's footer line:
+        <pre class="cmu-snippet"><code>APP_NAME = Your Site's Name
+
+[ui]
+THEMES = hamerschlag,forgejo-auto,forgejo-light,forgejo-dark
+DEFAULT_THEME = hamerschlag
+
+[other]
+SHOW_FOOTER_POWERED_BY = false
+SHOW_FOOTER_VERSION = false
+SHOW_FOOTER_TEMPLATE_LOAD_TIME = false</code></pre>
+      </li>
+      <li>Restart Forgejo. Templates and labels load at startup; the CSS loads on each page.</li>
+    </ol>
+    <p>
+      People who already picked a theme keep it; they can switch under
+      <strong>Settings &rsaquo; Appearance</strong>.
+    </p>
+
+    <h2 id="name" class="rule-top">Your Site's Name and Address</h2>
+    <ul class="cmu-checks">
+      <li>
+        <strong>The name is <code>APP_NAME</code>,</strong> in the header, the footer and every
+        page title.
+      </li>
+      <li>
+        <strong>A line under the name</strong> (who runs the site, as a link or plain text, or a
+        slogan) goes in <code>custom/templates/custom/hamerschlag/site_line.tmpl</code> as an
+        <code>&lt;h2&gt;</code>. It's empty unless you add one.
+      </li>
+      <li>
+        <strong>The footer's address</strong> is
+        <code>custom/templates/custom/hamerschlag/address.tmpl</code>. It starts with your site's
+        name, then the university's address; replace it with yours.
+      </li>
+      <li>
+        <strong>Your own about page,</strong> with your site's licenses and credits, can go
+        anywhere you like. Link it from the footer's address file or from Forgejo's
+        <code>custom/templates/custom/extra_links.tmpl</code>.
+      </li>
+    </ul>
+
+    <h2 id="updates" class="rule-top">What to Recheck on Forgejo Updates</h2>
+    <p>The theme replaces no Forgejo pages. These are the files that follow Forgejo's version:</p>
+    <ul>
+      <li>
+        <strong>Forgejo's spots for additions,</strong> empty by default:
+        <code>custom/templates/custom/header.tmpl</code> (the font and icons),
+        <code>body_inner_pre.tmpl</code> (the CMU header and the menu strip) and
+        <code>footer.tmpl</code> (the CMU footer). The menu strip repeats Forgejo's menu links and
+        their conditions; check them against Forgejo's <code>base/head_navbar.tmpl</code>.
+      </li>
+      <li>
+        <strong>Forgejo's English labels,</strong>
+        <code>custom/options/locale/locale_en-US.ini</code> and
+        <code>custom/options/locale_next/locale_en-US.json</code>. A custom locale file replaces
+        Forgejo's whole file, so they're built for one Forgejo version. Rebuild them for yours, or
+        leave <code>custom/options</code> out and keep Forgejo's labels.
+      </li>
+      <li>
+        <strong>The default avatar,</strong>
+        <code>custom/public/assets/img/avatar_default.png</code>.
+      </li>
+    </ul>
+
+    <h2 id="build" class="rule-top">Rebuild for Another Forgejo or Kilt</h2>
+    <p>
+      <code>scripts/build.mjs</code> builds <code>custom/</code> from the repository's
+      <code>src/</code>. Set <code>FORGEJO</code> or <code>KILT</code> in it, then:
+    </p>
+    <pre class="cmu-snippet"><code>node scripts/build.mjs</code></pre>
+    <p>It stops if one of the labels it changes is gone from that Forgejo version.</p>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+# Hamerschlag's service description, at https://hamerschlag.andrew.cmu.edu/.
+# Built with Jekyll & Plaid; the release workflow attaches it as
+# site.tar.gz. The live demo is at /demo/, a Forgejo running the theme.
+remote_theme: cmu-web/cmu-web-jekyll-and-plaid
+title: Hamerschlag
+description: A Forgejo theme in CMU style
+url: https://hamerschlag.andrew.cmu.edu
+cmu:
+  github_link: true
+  preview_alt: "Hamerschlag's home page: a Forgejo theme in CMU style, with a screenshot of the demo."
+  nav_links:
+    - title: Demo
+      url: /demo/
+      tab: true
+exclude: [vendor, Gemfile, Gemfile.lock, README.md]

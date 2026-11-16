@@ -1,0 +1,43 @@
+# On a version tag, builds the theme zip (the custom/ folder Forgejo admins
+# copy) and the service description for hamerschlag.andrew.cmu.edu, and
+# attaches both to the tag's GitHub release. The github-pages gem builds the
+# site with Jekyll & Plaid as its remote theme, as GitHub Pages does; the
+# server serves the files as they are, with the demo Forgejo at /demo/.
+name: Release
+
+on:
+  push:
+    tags: ["[0-9]*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # The theme: custom/ is committed built, so it's zipped as it is
+      - run: |
+          mkdir hamerschlag
+          cp -R custom LICENSE README.md hamerschlag/
+          zip -r "hamerschlag-$GITHUB_REF_NAME.zip" hamerschlag
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: site
+      - run: bundle exec jekyll build
+        working-directory: site
+        env:
+          JEKYLL_ENV: production
+          PAGES_REPO_NWO: ${{ github.repository }}
+          JEKYLL_GITHUB_TOKEN: ${{ github.token }}
+      - run: test -f site/_site/index.html && test -f site/_site/images/cmu-web-preview.webp
+      # One top-level folder, which Nix strips when it unpacks the archive
+      - run: mv site/_site hamerschlag-site && tar -czf site.tar.gz hamerschlag-site
+      - run: >-
+          gh release create "$GITHUB_REF_NAME" "hamerschlag-$GITHUB_REF_NAME.zip" site.tar.gz
+          --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

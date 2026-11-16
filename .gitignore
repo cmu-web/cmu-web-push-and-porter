@@ -1,3 +1,6 @@
 node_modules/
 # Local Forgejo data from dev/run.sh
 dev/data/
+
+# The built service description
+site/_site/

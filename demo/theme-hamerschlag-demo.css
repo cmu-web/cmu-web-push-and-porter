@@ -2,8 +2,10 @@
    to the demo, and the web server in front blocks the sign-in pages. */
 @import url("./theme-hamerschlag.css");
 
-#navbar a[href^="/user/login"],
-.ui.message:has(> a[href^="/user/login"]) {
+#navbar a[href*="/user/login"],
+.ui.message:has(> a[href*="/user/login"]),
+a.ui.button[href$="/issues/new"],
+a.ui.button[href$="/pulls/new"] {
   display: none !important;
 }
 

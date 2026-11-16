@@ -2,7 +2,8 @@
 # Runs Hamerschlag's demo locally in Docker, on made-up data only: the same
 # settings (demo/app.ini) and seed (demo/seed.mjs) as the hosted demo.
 #
-#   dev/run.sh up       # http://127.0.0.1:3700/ (PORT=... to change)
+#   dev/run.sh up       # Forgejo, for http://127.0.0.1:3710/demo/
+#   dev/run.sh serve    # the site at http://127.0.0.1:3710/ and the demo at /demo/
 #   dev/run.sh seed     # made-up people, projects, issues, a pull request
 #   dev/run.sh down     # stop and remove the container (data stays)
 #   dev/run.sh refresh  # copy a rebuilt theme in and restart
@@ -19,6 +20,8 @@ cd "$(dirname "$0")/.."
 IMAGE=codeberg.org/forgejo/forgejo:17.0.1-rootless
 NAME=${NAME:-cmu-web-hamerschlag-dev}
 PORT=${PORT:-3700}
+# The local stand-in for nginx (dev/serve.mjs): the site at /, Forgejo at /demo/
+PROXY=${PROXY:-3710}
 DATA=${DATA:-$PWD/dev/data}
 SIGNIN=${SIGNIN:-}
 
@@ -37,7 +40,7 @@ copy_theme() {
 case "${1:-}" in
 up)
   copy_theme
-  set -- -e FORGEJO__server__ROOT_URL="http://127.0.0.1:$PORT/"
+  set -- -e FORGEJO__server__ROOT_URL="http://127.0.0.1:$PROXY/demo/"
   if [ -n "$SIGNIN" ]; then
     echo "LOCAL ONLY: sign-in is on"
     set -- "$@" -e FORGEJO__service__ENABLE_INTERNAL_SIGNIN=true \
@@ -47,7 +50,7 @@ up)
   docker run -d --name "$NAME" -p "127.0.0.1:$PORT:3000" \
     -v "$DATA:/var/lib/gitea" \
     "$@" "$IMAGE" >/dev/null
-  echo "Forgejo on http://127.0.0.1:$PORT/"
+  echo "Forgejo on http://127.0.0.1:$PROXY/demo/ (run dev/run.sh serve), and directly on :$PORT"
   ;;
 refresh)
   # After a rebuild: CSS shows on reload; templates and labels need a restart
@@ -63,7 +66,8 @@ seed)
     echo "LOCAL ONLY: sign in as ac00 with $pw"
   fi
   ;;
+serve) node dev/serve.mjs "$PROXY" "$PORT" ;;
 down) docker rm -f "$NAME" >/dev/null && echo stopped ;;
 reset) docker rm -f "$NAME" >/dev/null 2>&1 || true; rm -rf "$DATA"; echo "data removed" ;;
-*) echo "usage: dev/run.sh up|seed|refresh|down|reset" >&2; exit 2 ;;
+*) echo "usage: dev/run.sh up|seed|refresh|serve|down|reset" >&2; exit 2 ;;
 esac
