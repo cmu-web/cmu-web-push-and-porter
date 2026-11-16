@@ -6,3 +6,11 @@
 .ui.message:has(> a[href^="/user/login"]) {
   display: none !important;
 }
+
+/* With no sign-in, Forgejo's menu bar has nothing left on wide screens: its
+   links are in the CMU header */
+@media (min-width: 768px) {
+  #navbar {
+    display: none !important;
+  }
+}

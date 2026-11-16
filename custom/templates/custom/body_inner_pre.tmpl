@@ -13,5 +13,33 @@
 			<span class="sitetitle"><a href="{{AppSubUrl}}/">{{AppName}}</a></span>
 			{{template "custom/hamerschlag/site_line" .}}
 		</div>
+		{{/* Forgejo's menu links as the template's own tab strip, which the
+		     template shows from 768px wide; narrower, Forgejo's menu takes
+		     over. Same links and conditions as Forgejo 17.0.1's
+		     base/head_navbar.tmpl: check them on every Forgejo update. */}}
+		<nav aria-label="{{ctx.Locale.Tr "aria.navbar"}}">
+			<ul>
+				{{if and .IsSigned .HideNavbarLinks}}
+				{{else if .IsSigned}}
+					{{if not .UnitIssuesGlobalDisabled}}
+						<li{{if .PageIsIssues}} class="active"{{end}}><a href="{{AppSubUrl}}/issues"{{if .PageIsIssues}} aria-current="page"{{end}}>{{ctx.Locale.Tr "issues"}}</a></li>
+					{{end}}
+					{{if not .UnitPullsGlobalDisabled}}
+						<li{{if .PageIsPulls}} class="active"{{end}}><a href="{{AppSubUrl}}/pulls"{{if .PageIsPulls}} aria-current="page"{{end}}>{{ctx.Locale.Tr "pull_requests"}}</a></li>
+					{{end}}
+					{{if and (not (and .UnitIssuesGlobalDisabled .UnitPullsGlobalDisabled)) .ShowMilestonesDashboardPage}}
+						<li{{if .PageIsMilestonesDashboard}} class="active"{{end}}><a href="{{AppSubUrl}}/milestones"{{if .PageIsMilestonesDashboard}} aria-current="page"{{end}}>{{ctx.Locale.Tr "milestones"}}</a></li>
+					{{end}}
+					<li{{if .PageIsExplore}} class="active"{{end}}><a href="{{AppSubUrl}}/explore/repos"{{if .PageIsExplore}} aria-current="page"{{end}}>{{ctx.Locale.Tr "explore"}}</a></li>
+				{{else if .IsLandingPageOrganizations}}
+					<li{{if .PageIsExplore}} class="active"{{end}}><a href="{{AppSubUrl}}/explore/organizations"{{if .PageIsExplore}} aria-current="page"{{end}}>{{ctx.Locale.Tr "explore"}}</a></li>
+				{{else}}
+					<li{{if .PageIsExplore}} class="active"{{end}}><a href="{{AppSubUrl}}/explore/repos"{{if .PageIsExplore}} aria-current="page"{{end}}>{{ctx.Locale.Tr "explore"}}</a></li>
+				{{end}}
+				{{if not .IsSigned}}
+					<li><a href="{{AppDocsURL "/"}}" target="_blank" rel="noopener noreferrer">{{ctx.Locale.Tr "help"}}</a></li>
+				{{end}}
+			</ul>
+		</nav>
 	</header>
 </div>

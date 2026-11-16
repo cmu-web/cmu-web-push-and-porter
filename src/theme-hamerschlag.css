@@ -221,3 +221,95 @@
 #navbar-logo {
   display: none !important;
 }
+
+/* From 768px wide, Forgejo's menu links sit in the CMU header as the
+   template's own tab strip (custom/body_inner_pre.tmpl), so Forgejo's menu
+   bar keeps only its right side: notifications, new and the account menu */
+@media (min-width: 768px) {
+  #navbar .navbar-left {
+    display: none !important;
+  }
+  #navbar {
+    justify-content: flex-end;
+    border-bottom: 0;
+    min-height: 0;
+  }
+}
+
+/* Tabs in the page (the repository's, explore's, a profile's, a pull
+   request's) in the Kilt's tab look (cmu-tabs): the current one red with a
+   red underline, the rest in ink, 600 weight, no icons, and counts as quiet
+   gray numbers instead of boxed labels. The Kilt's rules are for its own
+   markup, so this restates them for Forgejo's. Forgejo's own tab rules are
+   !important and five classes deep, hence the repeated .item. */
+overflow-menu.ui.menu,
+.ui.tabular.menu {
+  gap: 0 1.75em;
+  min-height: 0;
+  border: 0 !important;
+  border-bottom: 1px solid var(--cmu-line) !important;
+  font-size: medium;
+}
+overflow-menu.ui.menu .overflow-menu-items {
+  gap: 0 1.75em;
+}
+:is(overflow-menu.ui.menu .overflow-menu-items, overflow-menu.ui.menu, .ui.tabular.menu)
+  > .item.item.item {
+  margin: 0 0 -1px !important;
+  padding: 0.2em 0 1px !important;
+  border: 0 !important;
+  border-bottom: 3px solid transparent !important;
+  border-radius: 0 !important;
+  background: none !important;
+  color: var(--cmu-ink) !important;
+  font-size: medium !important;
+  font-weight: 600 !important;
+  line-height: 2.2 !important;
+}
+:is(overflow-menu.ui.menu .overflow-menu-items, overflow-menu.ui.menu, .ui.tabular.menu)
+  > .item.item.item:is(:hover, :focus-visible) {
+  color: var(--cmu-red) !important;
+}
+:is(overflow-menu.ui.menu .overflow-menu-items, overflow-menu.ui.menu, .ui.tabular.menu)
+  > .item.item.active {
+  border-bottom-color: var(--cmu-red) !important;
+  color: var(--cmu-red) !important;
+}
+:is(overflow-menu.ui.menu .overflow-menu-items, overflow-menu.ui.menu, .ui.tabular.menu) > .item > .svg {
+  display: none;
+}
+:is(overflow-menu.ui.menu .overflow-menu-items, overflow-menu.ui.menu, .ui.tabular.menu)
+  > .item
+  > .ui.label {
+  margin: 0 0 0 0.35em !important;
+  padding: 0 !important;
+  background: none !important;
+  color: var(--cmu-muted) !important;
+  font-size: inherit !important;
+  font-weight: 400 !important;
+  min-width: 0;
+}
+
+/* Icons in links keep their own color when the link turns red on hover,
+   focus or click; only the text changes, as on the Kilt's pages. At rest
+   they're the Kilt's gray, except where Forgejo's color means something
+   (open, closed and merged states, the language dots, labels). */
+#navbar ~ * a:not(.ui.label, .ui.button, .button) .svg:not([class*="tw-text-"], .text) {
+  color: var(--cmu-gray);
+  --focus-state-text-color: var(--cmu-gray);
+}
+/* Forgejo colors folders with its main color (here CMU red); they're
+   decoration, so the Kilt's gray */
+.svg:is(.octicon-file-directory-fill, .octicon-file-directory-open-fill, .octicon-file-submodule) {
+  color: var(--cmu-gray) !important;
+}
+
+/* The template's focus and press style (an !important rule in its layer:
+   red background, white text and icons) stays in the CMU header and footer.
+   Elsewhere it keeps only its red outline: the text and icons keep their own
+   colors, as on the Kilt's pages. */
+.full.height > :not(#container),
+body > :not(.full.height, .hamerschlag-template) {
+  --focus-state-bg-color: transparent;
+  --focus-state-text-color: currentcolor;
+}
