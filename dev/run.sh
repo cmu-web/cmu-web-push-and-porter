@@ -28,6 +28,7 @@ copy_theme() {
   rm -rf "$DATA/custom/public" "$DATA/custom/templates" "$DATA/custom/options"
   cp -R custom/public custom/templates custom/options "$DATA/custom/"
   cp demo/theme-hamerschlag-demo.css "$DATA/custom/public/assets/css/"
+  cp -R demo/templates/. "$DATA/custom/templates/"
   # The image reads its settings from custom/conf/app.ini in its data folder.
   # A fresh copy every time: Forgejo writes SIGNIN's overrides into it.
   cp demo/app.ini "$DATA/custom/conf/app.ini"

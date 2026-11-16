@@ -1,6 +1,7 @@
 {{/* Hamerschlag: the CMU template's header, above Forgejo's menu bar, in the
      template's own markup (#container > header) so its stylesheet styles it.
-     The theme CSS keeps that stylesheet off the rest of the page. */}}
+     The theme CSS keeps that stylesheet off the rest of the page. The site's
+     name is APP_NAME; the line under it is custom/hamerschlag/site_line.tmpl. */}}
 <div id="container" class="hamerschlag-template">
 	<header>
 		<div class="roof red invert">
@@ -10,6 +11,7 @@
 		</div>
 		<div id="sitename">
 			<span class="sitetitle"><a href="{{AppSubUrl}}/">{{AppName}}</a></span>
+			{{template "custom/hamerschlag/site_line" .}}
 		</div>
 	</header>
 </div>

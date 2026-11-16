@@ -1,10 +1,13 @@
 # Hamerschlag
 
-A light theme for [Forgejo](https://forgejo.org/) that follows Carnegie
-Mellon's web template and the
-[Carnegie Mellon Web Kilt](https://webkilt.andrew.cmu.edu/0/). It adds the
-template's red roof with the wordmark, the site name and the dark footer, and
-turns Forgejo's own colors, corners, font and labels into the Kilt's.
+Hamerschlag is a theme for [Forgejo](https://forgejo.org/), the code hosting
+service. It gives a Forgejo site Carnegie Mellon's web template and the
+[Carnegie Mellon Web Kilt](https://webkilt.andrew.cmu.edu/0/): the template's
+red roof with the wordmark, your site's name and the dark footer, and the
+Kilt's colors, corners, font and labels for Forgejo's own pages.
+
+Your site keeps its own name, the one you set as `APP_NAME`. The theme never
+shows its own name on your site.
 
 See it on the demo: https://hamerschlag.andrew.cmu.edu/
 
@@ -19,10 +22,10 @@ Built for Forgejo 17.0.1 and the Web Kilt 0.6.9.
   warnings and notices.
 - **Corners and font:** square corners and Open Sans, as on the template.
 - **Header:** the template's red roof with the Carnegie Mellon wordmark, then
-  the site name (Forgejo's `APP_NAME`), linking home. Forgejo's menu bar sits
-  under it, without Forgejo's logo.
-- **Footer:** the template's dark footer with the site name, the university's
-  address, Legal Info and www.cmu.edu.
+  your site's name (`APP_NAME`), linking home, with an optional line under it.
+  Forgejo's menu bar sits under it, without Forgejo's logo.
+- **Footer:** the template's dark footer with your site's name and the
+  university's address (or your own), Legal Info and www.cmu.edu.
 - **Labels:** menus, tabs and main buttons in Title Case ("Pull Requests,"
   "Find a File," "New Issue").
 - **Edges:** Forgejo's side margins follow the template's, so the header,
@@ -44,11 +47,11 @@ You need a Forgejo admin's access to its custom folder (`CustomPath`, often
    [release](https://github.com/cmu-web/cmu-web-hamerschlag/releases) and copy
    its `custom/public`, `custom/templates` and `custom/options` into
    Forgejo's custom folder.
-2. In `app.ini`, add the theme, make it the default and hide Forgejo's
-   footer line:
+2. In `app.ini`, set your site's name, add the theme, make it the default
+   and hide Forgejo's footer line:
 
    ```ini
-   APP_NAME = CMU Code
+   APP_NAME = Your Site's Name
 
    [ui]
    THEMES = hamerschlag,forgejo-auto,forgejo-light,forgejo-dark
@@ -63,8 +66,16 @@ You need a Forgejo admin's access to its custom folder (`CustomPath`, often
 3. Restart Forgejo. Templates and labels load at startup; the CSS loads on
    each page.
 
-Change `APP_NAME` to your site's name. People who already picked a theme keep
-it; they can switch under **Settings**, **Appearance**.
+`APP_NAME` is your site's name in the header, the footer and every page
+title. People who already picked a theme keep it; they can switch under
+**Settings**, **Appearance**.
+
+To add a line under your site's name (who runs it, as a link or plain text,
+or a slogan), replace `custom/templates/custom/hamerschlag/site_line.tmpl`
+with an `<h2>`, such as `<h2><a href="https://www.cmu.edu/">Your
+Department</a></h2>`. To change the footer's address, replace
+`custom/templates/custom/hamerschlag/address.tmpl`; it starts with your
+site's name.
 
 ## What It Replaces in Forgejo
 
@@ -74,8 +85,10 @@ Check these against every Forgejo update.
   additions, which are empty by default:
   `custom/templates/custom/header.tmpl` (the font and icons),
   `custom/templates/custom/body_inner_pre.tmpl` (the header) and
-  `custom/templates/custom/footer.tmpl` (the footer). If your Forgejo
-  already uses any of them, merge by hand.
+  `custom/templates/custom/footer.tmpl` (the footer), plus the theme's own
+  `custom/templates/custom/hamerschlag/` (the line under your site's name and
+  the footer's address). If your Forgejo already uses any of Forgejo's three,
+  merge by hand.
 - **Forgejo's English labels,** `custom/options/locale/locale_en-US.ini`
   and `custom/options/locale_next/locale_en-US.json`. A custom locale file
   replaces Forgejo's whole file, so these are built from the Forgejo version
@@ -90,7 +103,7 @@ Copy this into an AI coding agent that can reach your Forgejo server, and it
 installs the theme:
 
 ```text
-Install the Hamerschlag theme on this Forgejo instance. Download the latest release of https://github.com/cmu-web/cmu-web-hamerschlag and copy its custom/public, custom/templates and custom/options folders into the instance's custom folder (CustomPath, often /var/lib/forgejo/custom, or /var/lib/gitea/custom in the container), and stop to ask before overwriting any file the instance already has there. In app.ini, add hamerschlag to [ui] THEMES and set DEFAULT_THEME = hamerschlag; under [other], set SHOW_FOOTER_POWERED_BY and SHOW_FOOTER_VERSION to false. Restart Forgejo. Then compare the instance's Forgejo version with FORGEJO in the release's scripts/build.mjs: if they differ, check that custom/header.tmpl, custom/body_inner_pre.tmpl and custom/footer.tmpl are still empty extension points in that version, and rebuild the labels with node scripts/build.mjs after setting FORGEJO to the instance's version, or remove custom/options and keep Forgejo's own labels.
+Install the Hamerschlag theme on this Forgejo instance. Download the latest release of https://github.com/cmu-web/cmu-web-hamerschlag and copy its custom/public, custom/templates and custom/options folders into the instance's custom folder (CustomPath, often /var/lib/forgejo/custom, or /var/lib/gitea/custom in the container), and stop to ask before overwriting any file the instance already has there. In app.ini, keep the site's own APP_NAME (the theme shows it as the site's name and never names itself), add hamerschlag to [ui] THEMES and set DEFAULT_THEME = hamerschlag; under [other], set SHOW_FOOTER_POWERED_BY and SHOW_FOOTER_VERSION to false. If the site wants a line under its name or its own footer address, edit custom/templates/custom/hamerschlag/site_line.tmpl or address.tmpl. Restart Forgejo. Then compare the instance's Forgejo version with FORGEJO in the release's scripts/build.mjs: if they differ, check that custom/header.tmpl, custom/body_inner_pre.tmpl and custom/footer.tmpl are still empty extension points in that version, and rebuild the labels with node scripts/build.mjs after setting FORGEJO to the instance's version, or remove custom/options and keep Forgejo's own labels.
 ```
 
 ## Update the Kilt or Forgejo
@@ -111,7 +124,8 @@ Edit `src/`, never `custom/`, then rebuild. Commit both, so an admin can copy
 ## Demo
 
 https://hamerschlag.andrew.cmu.edu/ runs Forgejo with the theme and made-up
-people and projects. It's thrown away and rebuilt on every deploy from this
+people and projects. Like any site running the theme, it goes by its own name,
+Forgejo, with "A Hamerschlag theme demo" under it (`demo/templates`). It's thrown away and rebuilt on every deploy from this
 repository: `demo/app.ini` holds its settings and `demo/seed.mjs` its people
 (Andrew Carnegie, Margaret Morrison and Andrew Mellon), repositories, issues,
 a pull request and a release.

@@ -44,11 +44,12 @@ write(
   fill(readFileSync(join(root, "src/theme-hamerschlag.css"), "utf8")),
 );
 const templates = join(root, "src/templates/custom");
-for (const name of readdirSync(templates))
-  write(
-    join(root, "custom/templates/custom", name),
-    fill(readFileSync(join(templates, name), "utf8")),
-  );
+for (const name of readdirSync(templates, { recursive: true }))
+  if (name.endsWith(".tmpl"))
+    write(
+      join(root, "custom/templates/custom", name),
+      fill(readFileSync(join(templates, name), "utf8")),
+    );
 
 // Scotty, for deleted users and anyone without a generated avatar
 mkdirSync(join(root, "custom/public/assets/img"), { recursive: true });
