@@ -1,7 +1,7 @@
 // Fills a local Forgejo (dev/run.sh up) with made-up people and projects, to
 // look at the theme. Never point it at a real Forgejo.
 //
-//   node dev/seed.mjs http://127.0.0.1:3700 cmu-web-forgejo-dev
+//   node dev/seed.mjs http://127.0.0.1:3700 cmu-web-hamerschlag-dev
 import { execFileSync } from "node:child_process";
 
 const [base, container] = process.argv.slice(2);

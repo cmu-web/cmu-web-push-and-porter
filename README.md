@@ -1,4 +1,4 @@
-# CMU Web Forgejo Theme
+# Hamerschlag
 
 A light theme for [Forgejo](https://forgejo.org/) that follows Carnegie
 Mellon's web template and the
@@ -39,8 +39,8 @@ You need a Forgejo admin's access to its custom folder (`CustomPath`, often
    APP_NAME = CMU Code
 
    [ui]
-   THEMES = cmu,forgejo-auto,forgejo-light,forgejo-dark
-   DEFAULT_THEME = cmu
+   THEMES = hamerschlag,forgejo-auto,forgejo-light,forgejo-dark
+   DEFAULT_THEME = hamerschlag
 
    [other]
    SHOW_FOOTER_TEMPLATE_LOAD_TIME = false

@@ -31,9 +31,9 @@ const fill = (text) =>
     .replaceAll("@KILT_CMS_SRI@", sri(cms))
     .replaceAll("@KILT_APP_SRI@", sri(app));
 
-const out = join(root, "custom/public/assets/css/theme-cmu.css");
+const out = join(root, "custom/public/assets/css/theme-hamerschlag.css");
 mkdirSync(dirname(out), { recursive: true });
-writeFileSync(out, fill(readFileSync(join(root, "src/theme-cmu.css"), "utf8")));
+writeFileSync(out, fill(readFileSync(join(root, "src/theme-hamerschlag.css"), "utf8")));
 console.log("wrote", out);
 
 const from = join(root, "src/templates/custom");

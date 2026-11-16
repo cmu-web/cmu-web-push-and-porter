@@ -10,7 +10,7 @@
 set -eu
 cd "$(dirname "$0")/.."
 IMAGE=codeberg.org/forgejo/forgejo:17.0.1-rootless
-NAME=${NAME:-cmu-web-forgejo-dev}
+NAME=${NAME:-cmu-web-hamerschlag-dev}
 PORT=${PORT:-3700}
 DATA=${DATA:-$PWD/dev/data}
 
@@ -26,8 +26,8 @@ up)
     -e FORGEJO__server__ROOT_URL="http://127.0.0.1:$PORT/" \
     -e FORGEJO__server__OFFLINE_MODE=true \
     -e FORGEJO____APP_NAME="CMU Code" \
-    -e FORGEJO__ui__THEMES="cmu,forgejo-auto,forgejo-light,forgejo-dark" \
-    -e FORGEJO__ui__DEFAULT_THEME=cmu \
+    -e FORGEJO__ui__THEMES="hamerschlag,forgejo-auto,forgejo-light,forgejo-dark" \
+    -e FORGEJO__ui__DEFAULT_THEME=hamerschlag \
     -e FORGEJO__service__DISABLE_REGISTRATION=true \
     -e FORGEJO__mailer__ENABLED=false \
     -e FORGEJO__other__SHOW_FOOTER_TEMPLATE_LOAD_TIME=false \
