@@ -1,40 +1,68 @@
 #!/bin/sh
-# Runs Forgejo with the theme for a local look, on made-up data only.
+# Runs Hamerschlag's demo locally in Docker, on made-up data only: the same
+# settings (demo/app.ini) and seed (demo/seed.mjs) as the hosted demo.
 #
 #   dev/run.sh up       # http://127.0.0.1:3700/ (PORT=... to change)
-#   dev/run.sh seed     # made-up users, repos, issues and a pull request
+#   dev/run.sh seed     # made-up people, projects, issues, a pull request
 #   dev/run.sh down     # stop and remove the container (data stays)
+#   dev/run.sh refresh  # copy a rebuilt theme in and restart
+#   dev/run.sh reset    # down, then throw the data away
 #
-# Data goes in dev/data (or DATA=...). The theme's custom/public and
-# custom/templates are mounted read-only, so a rebuild shows on reload.
+# LOCAL ONLY: SIGNIN=1 dev/run.sh up turns sign-in back on, and
+# SIGNIN=1 dev/run.sh seed then prints a password for ac00, so you can look
+# at signed-in pages. The hosted demo never uses this.
+#
+# After node scripts/build.mjs, dev/run.sh refresh copies the theme in again
+# and restarts Forgejo.
 set -eu
 cd "$(dirname "$0")/.."
 IMAGE=codeberg.org/forgejo/forgejo:17.0.1-rootless
 NAME=${NAME:-cmu-web-hamerschlag-dev}
 PORT=${PORT:-3700}
 DATA=${DATA:-$PWD/dev/data}
+SIGNIN=${SIGNIN:-}
+
+# The theme and the demo's extras, copied into the data folder's custom/
+copy_theme() {
+  mkdir -p "$DATA/custom/conf"
+  rm -rf "$DATA/custom/public" "$DATA/custom/templates" "$DATA/custom/options"
+  cp -R custom/public custom/templates custom/options "$DATA/custom/"
+  cp demo/theme-hamerschlag-demo.css "$DATA/custom/public/assets/css/"
+  # The image reads its settings from custom/conf/app.ini in its data folder.
+  # A fresh copy every time: Forgejo writes SIGNIN's overrides into it.
+  cp demo/app.ini "$DATA/custom/conf/app.ini"
+}
 
 case "${1:-}" in
 up)
-  mkdir -p "$DATA/custom/conf"
+  copy_theme
+  set -- -e FORGEJO__server__ROOT_URL="http://127.0.0.1:$PORT/"
+  if [ -n "$SIGNIN" ]; then
+    echo "LOCAL ONLY: sign-in is on"
+    set -- "$@" -e FORGEJO__service__ENABLE_INTERNAL_SIGNIN=true \
+      -e FORGEJO__ui__THEMES=hamerschlag,hamerschlag-demo \
+      -e FORGEJO__ui__DEFAULT_THEME=hamerschlag
+  fi
   docker run -d --name "$NAME" -p "127.0.0.1:$PORT:3000" \
     -v "$DATA:/var/lib/gitea" \
-    -v "$PWD/custom/public:/var/lib/gitea/custom/public:ro" \
-    -v "$PWD/custom/templates:/var/lib/gitea/custom/templates:ro" \
-    -e FORGEJO__security__INSTALL_LOCK=true \
-    -e FORGEJO__database__DB_TYPE=sqlite3 \
-    -e FORGEJO__server__ROOT_URL="http://127.0.0.1:$PORT/" \
-    -e FORGEJO__server__OFFLINE_MODE=true \
-    -e FORGEJO____APP_NAME="CMU Code" \
-    -e FORGEJO__ui__THEMES="hamerschlag,forgejo-auto,forgejo-light,forgejo-dark" \
-    -e FORGEJO__ui__DEFAULT_THEME=hamerschlag \
-    -e FORGEJO__service__DISABLE_REGISTRATION=true \
-    -e FORGEJO__mailer__ENABLED=false \
-    -e FORGEJO__other__SHOW_FOOTER_TEMPLATE_LOAD_TIME=false \
-    "$IMAGE" >/dev/null
+    "$@" "$IMAGE" >/dev/null
   echo "Forgejo on http://127.0.0.1:$PORT/"
   ;;
-seed) node dev/seed.mjs "http://127.0.0.1:$PORT" "$NAME" ;;
+refresh)
+  # After a rebuild: CSS shows on reload; templates and labels need a restart
+  copy_theme
+  docker restart "$NAME" >/dev/null && echo "restarted"
+  ;;
+seed)
+  node demo/seed.mjs "http://127.0.0.1:$PORT" docker exec "$NAME"
+  if [ -n "$SIGNIN" ]; then
+    pw=$(head -c 18 /dev/urandom | base64 | tr -d '/+=')
+    docker exec "$NAME" forgejo admin user change-password --username ac00 \
+      --password "$pw" --must-change-password=false >/dev/null
+    echo "LOCAL ONLY: sign in as ac00 with $pw"
+  fi
+  ;;
 down) docker rm -f "$NAME" >/dev/null && echo stopped ;;
-*) echo "usage: dev/run.sh up|seed|down" >&2; exit 2 ;;
+reset) docker rm -f "$NAME" >/dev/null 2>&1 || true; rm -rf "$DATA"; echo "data removed" ;;
+*) echo "usage: dev/run.sh up|seed|refresh|down|reset" >&2; exit 2 ;;
 esac

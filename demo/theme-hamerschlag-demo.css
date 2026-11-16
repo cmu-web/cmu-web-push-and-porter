@@ -1,0 +1,8 @@
+/* Hamerschlag's demo: the theme, minus the ways to sign in. Nobody signs in
+   to the demo, and the web server in front blocks the sign-in pages. */
+@import url("./theme-hamerschlag.css");
+
+#navbar a[href^="/user/login"],
+.ui.message:has(> a[href^="/user/login"]) {
+  display: none !important;
+}

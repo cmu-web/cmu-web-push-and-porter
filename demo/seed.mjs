@@ -1,38 +1,56 @@
-// Fills a local Forgejo (dev/run.sh up) with made-up people and projects, to
-// look at the theme. Never point it at a real Forgejo.
+// Fills a fresh Forgejo with Hamerschlag's demo: made-up people and
+// projects. The demo is thrown away and rebuilt with this on every deploy, so
+// everything in it lives here. Never point it at a real Forgejo.
 //
-//   node dev/seed.mjs http://127.0.0.1:3700 cmu-web-hamerschlag-dev
+//   node demo/seed.mjs http://127.0.0.1:3700 docker exec cmu-web-hamerschlag-dev
+//
+// The rest of the arguments run Forgejo's command line in its container
+// (podman exec NAME on the server). Nobody signs in to the demo: the seed
+// makes Andrew Carnegie an admin with a random password it never keeps,
+// gets a one-time token from the command line and acts for the others with
+// the API's Sudo header.
 import { execFileSync } from "node:child_process";
+import { randomBytes } from "node:crypto";
+import { readFileSync } from "node:fs";
 
-const [base, container] = process.argv.slice(2);
-if (!base?.startsWith("http://127.0.0.1:") || !container) {
-  console.error("usage: node dev/seed.mjs http://127.0.0.1:PORT CONTAINER");
+const [base, ...exec] = process.argv.slice(2);
+if (!base?.startsWith("http://127.0.0.1:") || !exec.length) {
+  console.error("usage: node demo/seed.mjs http://127.0.0.1:PORT EXEC... (docker exec NAME)");
   process.exit(2);
 }
-const PASSWORD = "Plaid-Demo-2026";
 const people = [
-  { username: "ac00", full_name: "Andrew Carnegie", admin: true },
+  { username: "ac00", full_name: "Andrew Carnegie" },
   { username: "mm00", full_name: "Margaret Morrison" },
   { username: "am00", full_name: "Andrew Mellon" },
 ];
+const secret = () => randomBytes(24).toString("base64url");
 
-// The first person is made with Forgejo's command line, as the admin
-const cli = (...args) =>
-  execFileSync("docker", ["exec", container, "forgejo", ...args], { encoding: "utf8" });
-try {
-  cli(
-    "admin", "user", "create", "--admin", "--username", "ac00", "--password", PASSWORD,
-    "--email", "ac00@example.com", "--must-change-password=false",
-  );
-} catch (e) {
-  if (!String(e.stderr).includes("already exists")) throw e;
+// Forgejo's command line; a failure names the command but never its
+// arguments, which can hold a password
+function cli(...args) {
+  try {
+    return execFileSync(exec[0], [...exec.slice(1), "forgejo", ...args], { encoding: "utf8" });
+  } catch (e) {
+    const out = `${e.stdout ?? ""}${e.stderr ?? ""}`;
+    if (out.includes("already exists")) return "";
+    throw new Error(`forgejo ${args.slice(0, 3).join(" ")} failed:\n${out}`);
+  }
 }
+cli(
+  "admin", "user", "create", "--admin", "--username", "ac00", "--password", secret(),
+  "--email", "ac00@example.com", "--must-change-password=false",
+);
+const token = cli(
+  "admin", "user", "generate-access-token", "--username", "ac00",
+  "--token-name", `seed-${Date.now()}`, "--scopes", "all", "--raw",
+).trim();
 
 async function api(user, method, path, body) {
   const res = await fetch(`${base}/api/v1${path}`, {
     method,
     headers: {
-      authorization: "Basic " + Buffer.from(`${user}:${PASSWORD}`).toString("base64"),
+      authorization: `token ${token}`,
+      ...(user === "ac00" ? {} : { sudo: user }),
       "content-type": "application/json",
     },
     body: body && JSON.stringify(body),
@@ -49,11 +67,17 @@ for (const p of people.slice(1))
     username: p.username,
     full_name: p.full_name,
     email: `${p.username}@example.com`,
-    password: PASSWORD,
+    password: secret(),
     must_change_password: false,
   });
-for (const p of people)
+// Everyone gets the theme's Scotty, CMU's picture for a person without one
+const scotty = readFileSync(
+  new URL("../custom/public/assets/img/avatar_default.png", import.meta.url),
+).toString("base64");
+for (const p of people) {
   await api(p.username, "PATCH", "/user/settings", { full_name: p.full_name });
+  await api(p.username, "POST", "/user/avatar", { image: scotty });
+}
 
 // Andrew Carnegie's course notes: files, labels, issues and a pull request
 await api("ac00", "POST", "/user/repos", {
@@ -195,4 +219,12 @@ await api("am00", "POST", "/user/repos", {
   readme: "Default",
   default_branch: "main",
 });
-console.log("seeded: ac00, mm00, am00 (password " + PASSWORD + ")");
+// A release, for the Releases tab
+await api("ac00", "POST", "/repos/ac00/course-notes/releases", {
+  tag_name: "fall-2026",
+  target_commitish: "main",
+  name: "Fall 2026 Handouts",
+  body: "Handouts for weeks one through three.\n\n* Accounts and Andrew IDs\n* Email and Calendar\n* Files and Backups",
+});
+
+console.log("seeded: ac00, mm00, am00");
