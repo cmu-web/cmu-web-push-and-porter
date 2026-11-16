@@ -19,3 +19,12 @@
 		</div>
 	</template>
 </cmu-header>
+<script>
+	// The template's rules start from body (body:not(.ie) .roof a.wordmark),
+	// and a shadow root has none, so give it one around the template's markup
+	(function (host) {
+		var root = host.shadowRoot, body = document.createElement("body");
+		body.append(root.getElementById("container"));
+		root.append(body);
+	})(document.currentScript.previousElementSibling);
+</script>

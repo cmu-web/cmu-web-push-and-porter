@@ -25,11 +25,12 @@ up)
     -e FORGEJO__database__DB_TYPE=sqlite3 \
     -e FORGEJO__server__ROOT_URL="http://127.0.0.1:$PORT/" \
     -e FORGEJO__server__OFFLINE_MODE=true \
-    -e FORGEJO__DEFAULT__APP_NAME="CMU Code" \
+    -e FORGEJO____APP_NAME="CMU Code" \
     -e FORGEJO__ui__THEMES="cmu,forgejo-auto,forgejo-light,forgejo-dark" \
     -e FORGEJO__ui__DEFAULT_THEME=cmu \
     -e FORGEJO__service__DISABLE_REGISTRATION=true \
     -e FORGEJO__mailer__ENABLED=false \
+    -e FORGEJO__other__SHOW_FOOTER_TEMPLATE_LOAD_TIME=false \
     "$IMAGE" >/dev/null
   echo "Forgejo on http://127.0.0.1:$PORT/"
   ;;

@@ -142,3 +142,9 @@ cmu-footer {
   background: var(--color-body);
   border-bottom: 1px solid var(--cmu-line);
 }
+
+/* The site name in the CMU header already goes home, so Forgejo's logo link
+   would be a second one */
+#navbar-logo {
+  display: none !important;
+}
