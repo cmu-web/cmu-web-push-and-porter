@@ -1,10 +1,17 @@
-/* Hamerschlag: a light Forgejo theme on the Carnegie Mellon Web Kilt's colors and
-   the CMU template's font. Built by scripts/build.mjs from src/theme-hamerschlag.css;
+/* Hamerschlag: a light Forgejo theme on CMU's web template and the Carnegie
+   Mellon Web Kilt. Built by scripts/build.mjs from src/theme-hamerschlag.css;
    edit the source, not custom/.
 
    It starts from Forgejo's own light theme and changes only what CMU's look
-   asks for: the Kilt's colors, square corners and Open Sans. */
+   asks for: the Kilt's colors, square corners and Open Sans. The CMU header
+   and footer (custom/templates) use the template's own stylesheet, which
+   loads here in a cascade layer: every rule of Forgejo's wins over it, a
+   guard layer turns it off outside the header and footer, and inside them it
+   wins over Forgejo's. No script. */
+@layer cmu-template, hamerschlag-guard;
 @import url("./theme-forgejo-light.css");
+@import url("https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css") layer(cmu-template)
+  screen;
 
 /* From the Web Kilt 0.6.9's cmu-cms.css */
 :root {
@@ -121,19 +128,107 @@
 
   /* Selected text in the template's blue */
   --color-selection-bg: var(--cmu-blue);
+
+  /* Forgejo's side margins at every width, as a share of the page like the
+     template's header and footer, so their left edges line up (up to about
+     1330px wide, where Forgejo's content stops growing) */
+  --page-margin-x: 2%;
 }
 
-/* The CMU header and footer: the template's markup inside shadow roots (see
-   custom/templates). Their text starts from the browser's default size, as on
-   a template page, not Forgejo's 14px. */
-cmu-header,
-cmu-footer {
-  display: block;
+/* Outside the CMU header and footer, the template's stylesheet doesn't
+   apply: anything it sets that Forgejo leaves alone (its contact icons on
+   .icon, its gray on .grey) goes back to the browser's default. Forgejo's own
+   rules aren't in a layer, so they still win.
+
+   "all: revert" would also drop the sizes and alignment that HTML attributes
+   give (width, height, align and SVG's presentation attributes), so elements
+   that can carry them get only the template's own element rules reverted:
+   img, table, td, th, video and iframe, as of main.6.7. Check this list when
+   the template changes. */
+@layer hamerschlag-guard {
+  @scope (html) to (.hamerschlag-template) {
+    :not(
+        svg,
+        svg *,
+        img,
+        video,
+        iframe,
+        embed,
+        object,
+        table,
+        tr,
+        td,
+        th,
+        col,
+        colgroup,
+        hr,
+        font,
+        [align],
+        [valign],
+        [bgcolor],
+        [width],
+        [height],
+        [border],
+        [nowrap]
+      ),
+    ::before,
+    ::after {
+      all: revert;
+    }
+    img {
+      max-width: revert;
+      vertical-align: revert;
+    }
+    table {
+      border-collapse: revert;
+      border-spacing: revert;
+      clear: revert;
+      display: revert;
+      font-size: revert;
+      line-height: revert;
+      margin-bottom: revert;
+      max-width: revert;
+    }
+    td,
+    th {
+      color: revert;
+      min-height: revert;
+      min-width: revert;
+      padding: revert;
+    }
+    :is(td, th):not([border]) {
+      border: revert;
+    }
+    :is(td, th):not([valign]) {
+      vertical-align: revert;
+    }
+    video {
+      display: revert;
+    }
+    iframe {
+      max-width: revert;
+      transition: revert;
+    }
+    iframe:not([frameborder]) {
+      border: revert;
+    }
+  }
+}
+
+/* Inside the CMU header and footer, the template wins: Forgejo's rules give
+   way to it (revert-layer drops this page's unlayered rules, Forgejo's among
+   them, back to the template's layer). Their text starts from the browser's default size, as on a
+   template page, not Forgejo's 14px. */
+.hamerschlag-template.hamerschlag-template :is(*, *::before, *::after) {
+  all: revert-layer;
+}
+.hamerschlag-template {
   font-size: medium;
   line-height: normal;
 }
-cmu-footer {
-  margin-top: 2em;
+.hamerschlag-template + .page-footer,
+.page-footer + .hamerschlag-template {
+  margin-top: 0;
 }
 
 /* Forgejo's menu bar sits under the CMU header like a site's own menu: white,

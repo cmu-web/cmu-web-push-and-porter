@@ -1,30 +1,15 @@
-{{/* Hamerschlag: the CMU template's header, above Forgejo's menu bar.
-     It's in a shadow root so the template's styles stay inside it. */}}
-<cmu-header>
-	<template shadowrootmode="open">
-		<link href="https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css" media="screen" rel="stylesheet">
-		<link href="https://cdn.jsdelivr.net/gh/cmu-web/cmu-web-kilt@@KILT_VERSION@/css/cmu-cms.css" integrity="@KILT_CMS_SRI@" crossorigin="anonymous" rel="stylesheet">
-		<link href="https://cdn.jsdelivr.net/gh/cmu-web/cmu-web-kilt@@KILT_VERSION@/css/cmu-app.css" integrity="@KILT_APP_SRI@" crossorigin="anonymous" rel="stylesheet">
-		<div id="container">
-			<header>
-				<div class="roof red invert">
-					<div>
-						<a class="wordmark" href="https://www.cmu.edu/">Carnegie Mellon University</a>
-					</div>
-				</div>
-				<div id="sitename">
-					<span class="sitetitle"><a href="{{AppSubUrl}}/">{{AppName}}</a></span>
-				</div>
-			</header>
+{{/* Hamerschlag: the CMU template's header, above Forgejo's menu bar, in the
+     template's own markup (#container > header) so its stylesheet styles it.
+     The theme CSS keeps that stylesheet off the rest of the page. */}}
+<div id="container" class="hamerschlag-template">
+	<header>
+		<div class="roof red invert">
+			<div>
+				<a class="wordmark" href="https://www.cmu.edu/">Carnegie Mellon University</a>
+			</div>
 		</div>
-	</template>
-</cmu-header>
-<script>
-	// The template's rules start from body (body:not(.ie) .roof a.wordmark),
-	// and a shadow root has none, so give it one around the template's markup
-	(function (host) {
-		var root = host.shadowRoot, body = document.createElement("body");
-		body.append(root.getElementById("container"));
-		root.append(body);
-	})(document.currentScript.previousElementSibling);
-</script>
+		<div id="sitename">
+			<span class="sitetitle"><a href="{{AppSubUrl}}/">{{AppName}}</a></span>
+		</div>
+	</header>
+</div>
