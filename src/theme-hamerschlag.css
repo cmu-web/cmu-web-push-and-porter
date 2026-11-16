@@ -106,10 +106,11 @@
   /* Selected text in the template's blue */
   --color-selection-bg: var(--cmu-blue);
 
-  /* Forgejo's side margins at every width, as a share of the page like the
+  /* Forgejo's side margins at every width, as a share of the window like the
      template's header and footer, so their left edges line up (up to about
-     1330px wide, where Forgejo's content stops growing) */
-  --page-margin-x: 2%;
+     1330px wide, where Forgejo's content stops growing). In vw, not %:
+     Forgejo also uses it inside widths, where % means something else. */
+  --page-margin-x: 2vw;
 }
 
 /* Outside the CMU header and footer, the template's stylesheet doesn't
