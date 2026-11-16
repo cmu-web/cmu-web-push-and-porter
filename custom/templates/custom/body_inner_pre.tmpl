@@ -1,0 +1,21 @@
+{{/* CMU Forgejo theme: the CMU template's header, above Forgejo's menu bar.
+     It's in a shadow root so the template's styles stay inside it. */}}
+<cmu-header>
+	<template shadowrootmode="open">
+		<link href="https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css" media="screen" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/gh/cmu-web/cmu-web-kilt@0.6.9/css/cmu-cms.css" integrity="sha384-9jhXiuuhmbvQJYP71Rg8e7/NBlfXA/7MjHSMxZeSbELc/fdpt3PAwyoS4jvEMXqy" crossorigin="anonymous" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/gh/cmu-web/cmu-web-kilt@0.6.9/css/cmu-app.css" integrity="sha384-Tj5sbg6foKwNHx77Xj9uSKHv4N7jiYnj97prQWE3B2+6v3K8tsqz/xmsjxeJKvjA" crossorigin="anonymous" rel="stylesheet">
+		<div id="container">
+			<header>
+				<div class="roof red invert">
+					<div>
+						<a class="wordmark" href="https://www.cmu.edu/">Carnegie Mellon University</a>
+					</div>
+				</div>
+				<div id="sitename">
+					<span class="sitetitle"><a href="{{AppSubUrl}}/">{{AppName}}</a></span>
+				</div>
+			</header>
+		</div>
+	</template>
+</cmu-header>

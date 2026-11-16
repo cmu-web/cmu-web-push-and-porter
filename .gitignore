@@ -1,0 +1,3 @@
+node_modules/
+# Local Forgejo data from dev/run.sh
+dev/data/

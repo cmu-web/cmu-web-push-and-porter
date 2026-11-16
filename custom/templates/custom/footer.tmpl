@@ -1,0 +1,25 @@
+{{/* CMU Forgejo theme: the CMU template's footer, after Forgejo's own. It's
+     in a shadow root so the template's styles stay inside it. */}}
+<cmu-footer>
+	<template shadowrootmode="open">
+		<link href="https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css" media="screen" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/gh/cmu-web/cmu-web-kilt@0.6.9/css/cmu-cms.css" integrity="sha384-9jhXiuuhmbvQJYP71Rg8e7/NBlfXA/7MjHSMxZeSbELc/fdpt3PAwyoS4jvEMXqy" crossorigin="anonymous" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/gh/cmu-web/cmu-web-kilt@0.6.9/css/cmu-app.css" integrity="sha384-Tj5sbg6foKwNHx77Xj9uSKHv4N7jiYnj97prQWE3B2+6v3K8tsqz/xmsjxeJKvjA" crossorigin="anonymous" rel="stylesheet">
+		<div id="container">
+			<footer class="grid column3 invert">
+				<div>
+					<p>{{AppName}}<br>Carnegie Mellon University<br>5000 Forbes Avenue<br>Pittsburgh, PA 15213</p>
+					<ul>
+						<li><a href="https://www.cmu.edu/legal/">Legal Info</a></li>
+						<li><a href="https://www.cmu.edu/">www.cmu.edu</a></li>
+					</ul>
+					<ul>
+						<li>&copy; {{if .PageStartTime}}{{.PageStartTime.Year}} {{end}}Carnegie Mellon University</li>
+					</ul>
+				</div>
+				<div></div>
+				<div></div>
+			</footer>
+		</div>
+	</template>
+</cmu-footer>

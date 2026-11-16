@@ -1,0 +1,144 @@
+/* CMU: a light Forgejo theme on the Carnegie Mellon Web Kilt's colors and
+   the CMU template's font. Built by scripts/build.mjs from src/theme-cmu.css;
+   edit the source, not custom/.
+
+   It starts from Forgejo's own light theme and changes only what CMU's look
+   asks for: the Kilt's colors, square corners and Open Sans. */
+@import url("./theme-forgejo-light.css");
+
+/* From the Web Kilt 0.6.9's cmu-cms.css */
+:root {
+  --cmu-red: #c41230;
+  --cmu-ink: #22262a;
+  --cmu-muted: #5b6670;
+  --cmu-line: #d9dde1;
+  --cmu-tint: #f4f5f6;
+  --cmu-green: #1d5a3a;
+  --cmu-green-fill: #00853e;
+  --cmu-green-tint: #e3f1ea;
+  --cmu-amber: #6b4d00;
+  --cmu-amber-tint: #fff4d6;
+  --cmu-gold: #fdb515;
+  --cmu-gray: #4a535b;
+  --cmu-gray-tint: #eceef0;
+  --cmu-red-tint: #fdf2f3;
+  --cmu-blue: #043673; /* the template's blue */
+  --cmu-link: #941120; /* the template's link color */
+  --cmu-link-hover: #f00;
+  --cmu-blue-tint: #e9eff7;
+  /* Checkboxes, radio buttons, sliders and progress bars in CMU red instead
+     of the browser's blue */
+  accent-color: var(--cmu-red);
+}
+
+:root {
+  /* Fonts: the template's Open Sans (loaded in custom/header.tmpl) */
+  --fonts-proportional: "Open Sans", -apple-system, "Segoe UI", system-ui, Roboto, "Helvetica Neue",
+    Arial;
+
+  /* Corners: the template's buttons, fields and boxes are square */
+  --border-radius: 0;
+  --border-radius-medium: 0;
+
+  /* The main color: CMU red, with shades mixed from it */
+  --color-primary: var(--cmu-red);
+  --color-primary-contrast: #fff;
+  --color-primary-dark-1: color-mix(in srgb, var(--cmu-red), #000 10%);
+  --color-primary-dark-2: color-mix(in srgb, var(--cmu-red), #000 20%);
+  --color-primary-dark-3: color-mix(in srgb, var(--cmu-red), #000 30%);
+  --color-primary-dark-4: color-mix(in srgb, var(--cmu-red), #000 40%);
+  --color-primary-dark-5: color-mix(in srgb, var(--cmu-red), #000 50%);
+  --color-primary-dark-6: color-mix(in srgb, var(--cmu-red), #000 60%);
+  --color-primary-dark-7: color-mix(in srgb, var(--cmu-red), #000 70%);
+  --color-primary-light-1: color-mix(in srgb, var(--cmu-red), #fff 10%);
+  --color-primary-light-2: color-mix(in srgb, var(--cmu-red), #fff 25%);
+  --color-primary-light-3: color-mix(in srgb, var(--cmu-red), #fff 40%);
+  --color-primary-light-4: color-mix(in srgb, var(--cmu-red), #fff 60%);
+  --color-primary-light-5: color-mix(in srgb, var(--cmu-red), #fff 75%);
+  --color-primary-light-6: color-mix(in srgb, var(--cmu-red), #fff 88%);
+  --color-primary-light-7: var(--cmu-red-tint);
+  --color-primary-alpha-10: color-mix(in srgb, var(--cmu-red) 10%, transparent);
+  --color-primary-alpha-20: color-mix(in srgb, var(--cmu-red) 20%, transparent);
+  --color-primary-alpha-30: color-mix(in srgb, var(--cmu-red) 30%, transparent);
+  --color-primary-alpha-40: color-mix(in srgb, var(--cmu-red) 40%, transparent);
+  --color-primary-alpha-50: color-mix(in srgb, var(--cmu-red) 50%, transparent);
+  --color-primary-alpha-60: color-mix(in srgb, var(--cmu-red) 60%, transparent);
+  --color-primary-alpha-70: color-mix(in srgb, var(--cmu-red) 70%, transparent);
+  --color-primary-alpha-80: color-mix(in srgb, var(--cmu-red) 80%, transparent);
+  --color-primary-alpha-90: color-mix(in srgb, var(--cmu-red) 90%, transparent);
+  --color-accent: var(--cmu-red);
+  --color-small-accent: var(--cmu-red-tint);
+  --color-highlight-bg: var(--cmu-red-tint);
+  --color-highlight-fg: var(--color-primary-light-4);
+
+  /* Text and lines */
+  --color-text-dark: #000;
+  --color-text: var(--cmu-ink);
+  --color-text-light: var(--cmu-gray);
+  --color-text-light-1: var(--cmu-gray);
+  --color-text-light-2: var(--cmu-muted);
+  --color-text-light-3: var(--cmu-muted);
+  --color-secondary: var(--cmu-line);
+  --color-secondary-dark-1: var(--cmu-line);
+  --color-input-border: var(--cmu-line);
+  --color-light-border: var(--cmu-line);
+  --color-timeline: var(--cmu-line);
+
+  /* Surfaces: white pages, the Kilt's light gray for boxes and bars */
+  --color-body: #fff;
+  --color-box-header: var(--cmu-tint);
+  --color-box-body: #fff;
+  --color-header-wrapper: #fff;
+  --color-nav-bg: var(--cmu-tint);
+  --color-nav-hover-bg: var(--cmu-gray-tint);
+  --color-secondary-nav-bg: #fff;
+  --color-menu: #fff;
+  --color-card: #fff;
+  --color-footer: var(--cmu-tint);
+  --color-secondary-bg: var(--cmu-tint);
+  --color-markup-code-inline: var(--cmu-gray-tint);
+  --color-markup-code-block: var(--cmu-tint);
+  --color-code-bg: #fff;
+
+  /* Messages: the Kilt's callout colors */
+  --color-error-bg: var(--cmu-red-tint);
+  --color-error-border: color-mix(in srgb, var(--cmu-red) 35%, #fff);
+  --color-error-text: var(--cmu-red);
+  --color-success-bg: var(--cmu-green-tint);
+  --color-success-border: color-mix(in srgb, var(--cmu-green) 35%, #fff);
+  --color-success-text: var(--cmu-green);
+  --color-warning-bg: var(--cmu-amber-tint);
+  --color-warning-border: var(--cmu-gold);
+  --color-warning-text: var(--cmu-amber);
+  --color-info-bg: var(--cmu-blue-tint);
+  --color-info-border: color-mix(in srgb, var(--cmu-blue) 30%, #fff);
+  --color-info-text: var(--cmu-blue);
+
+  /* Open, merged and closed: the Kilt's green, the template's blue and red */
+  --color-green: var(--cmu-green-fill);
+  --color-blue: var(--cmu-blue);
+  --color-red: var(--cmu-red);
+
+  /* Selected text in the template's blue */
+  --color-selection-bg: var(--cmu-blue);
+}
+
+/* The CMU header and footer: the template's markup inside shadow roots (see
+   custom/templates). Their text starts from the browser's default size, as on
+   a template page, not Forgejo's 14px. */
+cmu-header,
+cmu-footer {
+  display: block;
+  font-size: medium;
+  line-height: normal;
+}
+cmu-footer {
+  margin-top: 2em;
+}
+
+/* Forgejo's menu bar sits under the CMU header like a site's own menu: white,
+   with the Kilt's line under it */
+#navbar {
+  background: var(--color-body);
+  border-bottom: 1px solid var(--cmu-line);
+}
