@@ -1,43 +1,55 @@
 # On a version tag, builds the theme zip (the custom/ folder Forgejo admins
-# copy) and the service description for hamerschlag.andrew.cmu.edu, and
-# attaches both to the tag's GitHub release. The github-pages gem builds the
-# site with Jekyll & Plaid as its remote theme, as GitHub Pages does; the
-# server serves the files as they are, with the demo Forgejo at /demo/.
-name: Release
+# copy) and the service description for themes.andrew.cmu.edu/push-and-porter/0/,
+# and attaches both to the tag's GitHub release. The github-pages gem builds
+# the site with Jekyll & Plaid as its remote theme, as GitHub Pages does; the
+# server serves the files as they are, with the demo Forgejo at /demo/ inside
+# the line's folder.
+name: Attach Release Files
 
 on:
   push:
     tags: ["[0-9]*"]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       # The theme: custom/ is committed built, so it's zipped as it is
       - run: |
-          mkdir hamerschlag
-          cp -R custom LICENSE README.md hamerschlag/
-          zip -r "hamerschlag-$GITHUB_REF_NAME.zip" hamerschlag
-      - uses: ruby/setup-ruby@v1
+          mkdir push-and-porter
+          cp -R custom LICENSE README.md push-and-porter/
+          zip -r "push-and-porter-$GITHUB_REF_NAME.zip" push-and-porter
+      - uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1.338.0
         with:
           ruby-version: "3.3"
           bundler-cache: true
-          working-directory: site
-      - run: bundle exec jekyll build
-        working-directory: site
+          working-directory: docs
+      # Served under the theme's folder and its Web Kilt line (0) on the
+      # themes host.
+      - run: bundle exec jekyll build --baseurl /push-and-porter/0
+        working-directory: docs
         env:
           JEKYLL_ENV: production
           PAGES_REPO_NWO: ${{ github.repository }}
           JEKYLL_GITHUB_TOKEN: ${{ github.token }}
-      - run: test -f site/_site/index.html && test -f site/_site/images/cmu-web-preview.webp
+      - run: test -f docs/_site/index.html && test -f docs/_site/images/cmu-web-preview.webp
       # One top-level folder, which Nix strips when it unpacks the archive
-      - run: mv site/_site hamerschlag-site && tar -czf site.tar.gz hamerschlag-site
-      - run: >-
-          gh release create "$GITHUB_REF_NAME" "hamerschlag-$GITHUB_REF_NAME.zip" site.tar.gz
-          --title "$GITHUB_REF_NAME" --generate-notes
+      - run: mv docs/_site push-and-porter-site && tar -czf site.tar.gz push-and-porter-site
+      # A person makes the release, with its notes; this waits for it (up to
+      # 30 minutes) and attaches the files
+      - name: Attach to the release
         env:
           GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 60); do
+            gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 && break
+            sleep 30
+          done
+          gh release upload "$GITHUB_REF_NAME" "push-and-porter-$GITHUB_REF_NAME.zip" site.tar.gz --clobber
