@@ -1,8 +1,8 @@
-// Fills a fresh Forgejo with Hamerschlag's demo: made-up people and
+// Fills a fresh Forgejo with Push & Porter's demo: made-up people and
 // projects. The demo is thrown away and rebuilt with this on every deploy, so
 // everything in it lives here. Never point it at a real Forgejo.
 //
-//   node demo/seed.mjs http://127.0.0.1:3700 docker exec cmu-web-hamerschlag-dev
+//   node demo/seed.mjs http://127.0.0.1:3700 docker exec cmu-web-push-and-porter-dev
 //
 // The rest of the arguments run Forgejo's command line in its container
 // (podman exec NAME on the server). Nobody signs in to the demo: the seed

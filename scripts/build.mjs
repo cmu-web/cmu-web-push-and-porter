@@ -13,7 +13,7 @@
 import { copyFileSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
-export const KILT = "0.6.9";
+export const KILT = "0.8.9";
 export const FORGEJO = "17.0.1";
 const KILT_CSS = `https://cdn.jsdelivr.net/gh/cmu-web/cmu-web-kilt@${KILT}/css`;
 const FORGEJO_SRC = `https://codeberg.org/forgejo/forgejo/raw/tag/v${FORGEJO}`;
@@ -40,8 +40,8 @@ const fill = (text) =>
     .replaceAll("@KILT_TOKENS@", `/* From the Web Kilt ${KILT}'s cmu-cms.css */\n${tokens[0]}`);
 
 write(
-  join(root, "custom/public/assets/css/theme-hamerschlag.css"),
-  fill(readFileSync(join(root, "src/theme-hamerschlag.css"), "utf8")),
+  join(root, "custom/public/assets/css/theme-push-and-porter.css"),
+  fill(readFileSync(join(root, "src/theme-push-and-porter.css"), "utf8")),
 );
 const templates = join(root, "src/templates/custom");
 for (const name of readdirSync(templates, { recursive: true }))

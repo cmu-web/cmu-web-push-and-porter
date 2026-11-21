@@ -1,5 +1,5 @@
 #!/bin/sh
-# Runs Hamerschlag's demo locally in Docker, on made-up data only: the same
+# Runs Push & Porter's demo locally in Docker, on made-up data only: the same
 # settings (demo/app.ini) and seed (demo/seed.mjs) as the hosted demo.
 #
 #   dev/run.sh up       # Forgejo, for http://127.0.0.1:3710/demo/
@@ -18,7 +18,7 @@
 set -eu
 cd "$(dirname "$0")/.."
 IMAGE=codeberg.org/forgejo/forgejo:17.0.1-rootless
-NAME=${NAME:-cmu-web-hamerschlag-dev}
+NAME=${NAME:-cmu-web-push-and-porter-dev}
 PORT=${PORT:-3700}
 # The local stand-in for nginx (dev/serve.mjs): the site at /, Forgejo at /demo/
 PROXY=${PROXY:-3710}
@@ -30,7 +30,7 @@ copy_theme() {
   mkdir -p "$DATA/custom/conf"
   rm -rf "$DATA/custom/public" "$DATA/custom/templates" "$DATA/custom/options"
   cp -R custom/public custom/templates custom/options "$DATA/custom/"
-  cp demo/theme-hamerschlag-demo.css "$DATA/custom/public/assets/css/"
+  cp demo/theme-push-and-porter-demo.css "$DATA/custom/public/assets/css/"
   cp -R demo/templates/. "$DATA/custom/templates/"
   # The image reads its settings from custom/conf/app.ini in its data folder.
   # A fresh copy every time: Forgejo writes SIGNIN's overrides into it.
@@ -44,8 +44,8 @@ up)
   if [ -n "$SIGNIN" ]; then
     echo "LOCAL ONLY: sign-in is on"
     set -- "$@" -e FORGEJO__service__ENABLE_INTERNAL_SIGNIN=true \
-      -e FORGEJO__ui__THEMES=hamerschlag,hamerschlag-demo \
-      -e FORGEJO__ui__DEFAULT_THEME=hamerschlag
+      -e FORGEJO__ui__THEMES=push-and-porter,push-and-porter-demo \
+      -e FORGEJO__ui__DEFAULT_THEME=push-and-porter
   fi
   docker run -d --name "$NAME" -p "127.0.0.1:$PORT:3000" \
     -v "$DATA:/var/lib/gitea" \

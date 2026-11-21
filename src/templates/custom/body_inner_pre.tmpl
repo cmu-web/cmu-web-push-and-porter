@@ -1,8 +1,8 @@
-{{/* Hamerschlag: the CMU template's header, above Forgejo's menu bar, in the
+{{/* Push & Porter: the CMU template's header, above Forgejo's menu bar, in the
      template's own markup (#container > header) so its stylesheet styles it.
      The theme CSS keeps that stylesheet off the rest of the page. The site's
-     name is APP_NAME; the line under it is custom/hamerschlag/site_line.tmpl. */}}
-<div id="container" class="hamerschlag-template">
+     name is APP_NAME; the line under it is custom/push-and-porter/site_line.tmpl. */}}
+<div id="container" class="push-and-porter-template">
 	<header>
 		<div class="roof red invert">
 			<div>
@@ -11,7 +11,7 @@
 		</div>
 		<div id="sitename">
 			<span class="sitetitle"><a href="{{AppSubUrl}}/">{{AppName}}</a></span>
-			{{template "custom/hamerschlag/site_line" .}}
+			{{template "custom/push-and-porter/site_line" .}}
 		</div>
 		{{/* Forgejo's menu links as the template's own tab strip, which the
 		     template shows from 768px wide; narrower, Forgejo's menu takes

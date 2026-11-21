@@ -1,6 +1,6 @@
 ---
 layout: sections
-title: Hamerschlag
+title: Push & Porter
 description: A Forgejo theme in CMU style.
 breadcrumbs: false
 ---
@@ -10,11 +10,11 @@ breadcrumbs: false
       <div>
         <h1>A Forgejo Theme in CMU Style</h1>
         <p class="cmu-lead">
-          Hamerschlag gives a Forgejo site Carnegie Mellon's web template: the red roof, your
+          Push &amp; Porter gives a Forgejo site Carnegie Mellon's web template: the red roof, your
           site's name and the CMU footer, with the Web Kilt's colors, tabs and type on every page.
         </p>
         <div class="cmu-cta-row">
-          <a class="btn" href="https://github.com/cmu-web/cmu-web-hamerschlag/releases/latest"
+          <a class="btn" href="https://github.com/cmu-web/cmu-web-push-and-porter/releases/latest"
             >Download the Theme</a
           >
           <a class="cta" href="#get-started">Get Started</a>
@@ -92,20 +92,14 @@ breadcrumbs: false
       </li>
     </ul>
 
-    <h2 id="agent" class="rule-top">Set Up With an AI Agent</h2>
-    <p>
-      Copy the prompt into an AI coding agent that can reach your Forgejo server, and it installs
-      the theme.
-    </p>
-    <div class="cmu-copyable">
-      <pre class="cmu-snippet" id="hs-agent-prompt"><code>Install the Hamerschlag theme on this Forgejo instance. Download the latest release of https://github.com/cmu-web/cmu-web-hamerschlag and copy its custom/public, custom/templates and custom/options folders into the instance's custom folder (CustomPath, often /var/lib/forgejo/custom, or /var/lib/gitea/custom in the container), and stop to ask before overwriting any file the instance already has there. In app.ini, keep the site's own APP_NAME (the theme shows it as the site's name and never names itself), add hamerschlag to [ui] THEMES and set DEFAULT_THEME = hamerschlag; under [other], set SHOW_FOOTER_POWERED_BY and SHOW_FOOTER_VERSION to false. If the site wants a line under its name or its own footer address, edit custom/templates/custom/hamerschlag/site_line.tmpl or address.tmpl. Restart Forgejo. Then compare the instance's Forgejo version with FORGEJO in the release's scripts/build.mjs: if they differ, check that custom/header.tmpl, custom/body_inner_pre.tmpl and custom/footer.tmpl are still empty extension points in that version, and rebuild the labels with node scripts/build.mjs after setting FORGEJO to the instance's version, or remove custom/options and keep Forgejo's own labels.</code></pre>
-      <button
-        type="button"
-        class="cmu-copy"
-        data-cmu-copy="#hs-agent-prompt"
-        aria-label="Copy the Prompt"
-        title="Copy the Prompt"
-      ></button>
+    <!-- prettier-ignore -->
+    <div class="cmu-agent">
+      <h2 id="agent" class="rule-top">Set Up With an AI Agent</h2>
+      <p>Copy the prompt into an AI coding agent that can reach your Forgejo server, and it installs the theme. <button type="button" class="cmu-copy" data-cmu-copy="#pp-agent-prompt" aria-label="Copy the Prompt" title="Copy the Prompt"></button></p>
+      <details class="cmu-more">
+        <summary><span class="cmu-more-closed">Want to read it first?</span> <span class="cmu-more-link"><span class="cmu-more-closed">See the Prompt</span><span class="cmu-more-open">Hide the Prompt</span></span></summary>
+        <pre class="cmu-snippet"><code id="pp-agent-prompt">Install the Push &amp; Porter theme on this Forgejo instance. Download the latest release of https://github.com/cmu-web/cmu-web-push-and-porter and copy its custom/public, custom/templates and custom/options folders into the instance's custom folder (CustomPath, often /var/lib/forgejo/custom, or /var/lib/gitea/custom in the container), and stop to ask before overwriting any file the instance already has there. In app.ini, keep the site's own APP_NAME (the theme shows it as the site's name and never names itself), add push-and-porter to [ui] THEMES and set DEFAULT_THEME = push-and-porter; under [other], set SHOW_FOOTER_POWERED_BY and SHOW_FOOTER_VERSION to false. If the site wants a line under its name or its own footer address, edit custom/templates/custom/push-and-porter/site_line.tmpl or address.tmpl. Restart Forgejo. Then compare the instance's Forgejo version with FORGEJO in the release's scripts/build.mjs: if they differ, check that custom/header.tmpl, custom/body_inner_pre.tmpl and custom/footer.tmpl are still empty extension points in that version, and rebuild the labels with node scripts/build.mjs after setting FORGEJO to the instance's version, or remove custom/options and keep Forgejo's own labels.</code></pre>
+      </details>
     </div>
   </div>
 </div>

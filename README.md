@@ -1,7 +1,8 @@
-# Hamerschlag
+# Push & Porter
 
-Hamerschlag is a theme for [Forgejo](https://forgejo.org/), the code hosting
-service. It gives a Forgejo site Carnegie Mellon's web template and the
+Push & Porter, named for Porter Hall and the git push, is a theme for
+[Forgejo](https://forgejo.org/), the code hosting service. It gives a Forgejo
+site Carnegie Mellon's web template and the
 [Carnegie Mellon Web Kilt](https://webkilt.andrew.cmu.edu/0/): the template's
 red roof with the wordmark, your site's name and the dark footer, and the
 Kilt's colors, corners, font and labels for Forgejo's own pages.
@@ -9,15 +10,12 @@ Kilt's colors, corners, font and labels for Forgejo's own pages.
 Your site keeps its own name, the one you set as `APP_NAME`. The theme never
 shows its own name on your site.
 
-It's named for Hamerschlag Hall: "Hammerschlag" is German for a hammer strike,
-which suits a theme for Forgejo, whose name means "forge" in Esperanto.
-
-The service description is at https://hamerschlag.andrew.cmu.edu/, and the
-demo at https://hamerschlag.andrew.cmu.edu/demo/.
+The service description is at
+https://themes.andrew.cmu.edu/push-and-porter/, and the demo at https://themes.andrew.cmu.edu/push-and-porter/0/demo/.
 
 ![An issue in Forgejo with the CMU header.](images/issue.png)
 
-Built for Forgejo 17.0.1 and the Web Kilt 0.6.9.
+Built for Forgejo 17.0.1 and the Web Kilt 0.7.0.
 
 ## What It Changes
 
@@ -48,7 +46,7 @@ You need a Forgejo admin's access to its custom folder (`CustomPath`, often
 `/var/lib/forgejo/custom` or, in the container, `/var/lib/gitea/custom`).
 
 1. Download the latest
-   [release](https://github.com/cmu-web/cmu-web-hamerschlag/releases) and copy
+   [release](https://github.com/cmu-web/cmu-web-push-and-porter/releases) and copy
    its `custom/public`, `custom/templates` and `custom/options` into
    Forgejo's custom folder.
 2. In `app.ini`, set your site's name, add the theme, make it the default
@@ -58,8 +56,8 @@ You need a Forgejo admin's access to its custom folder (`CustomPath`, often
    APP_NAME = Your Site's Name
 
    [ui]
-   THEMES = hamerschlag,forgejo-auto,forgejo-light,forgejo-dark
-   DEFAULT_THEME = hamerschlag
+   THEMES = push-and-porter,forgejo-auto,forgejo-light,forgejo-dark
+   DEFAULT_THEME = push-and-porter
 
    [other]
    SHOW_FOOTER_POWERED_BY = false
@@ -75,10 +73,10 @@ title. People who already picked a theme keep it; they can switch under
 **Settings**, **Appearance**.
 
 To add a line under your site's name (who runs it, as a link or plain text,
-or a slogan), replace `custom/templates/custom/hamerschlag/site_line.tmpl`
+or a slogan), replace `custom/templates/custom/push-and-porter/site_line.tmpl`
 with an `<h2>`, such as `<h2><a href="https://www.cmu.edu/">Your
 Department</a></h2>`. To change the footer's address, replace
-`custom/templates/custom/hamerschlag/address.tmpl`; it starts with your
+`custom/templates/custom/push-and-porter/address.tmpl`; it starts with your
 site's name.
 
 ## What It Replaces in Forgejo
@@ -90,7 +88,7 @@ Check these against every Forgejo update.
   `custom/templates/custom/header.tmpl` (the font and icons),
   `custom/templates/custom/body_inner_pre.tmpl` (the header) and
   `custom/templates/custom/footer.tmpl` (the footer), plus the theme's own
-  `custom/templates/custom/hamerschlag/` (the line under your site's name and
+  `custom/templates/custom/push-and-porter/` (the line under your site's name and
   the footer's address). If your Forgejo already uses any of Forgejo's three,
   merge by hand.
 - **Forgejo's English labels,** `custom/options/locale/locale_en-US.ini`
@@ -104,7 +102,7 @@ Check these against every Forgejo update.
 ## Set Up With an AI Agent
 
 The prompt for an AI coding agent is on the service description:
-https://hamerschlag.andrew.cmu.edu/#agent (its source is `site/index.html`).
+https://themes.andrew.cmu.edu/push-and-porter/0/#agent (its source is `docs/index.html`).
 
 ## Update the Kilt or Forgejo
 
@@ -123,9 +121,10 @@ Edit `src/`, never `custom/`, then rebuild. Commit both, so an admin can copy
 
 ## Demo
 
-https://hamerschlag.andrew.cmu.edu/demo/ runs Forgejo with the theme and
+https://themes.andrew.cmu.edu/push-and-porter/0/demo/ runs Forgejo with the theme and
 made-up people and projects. Like any site running the theme, it goes by its
-own name, "Forgejo Hamerschlag Theme Demo," with "Hammer Strike" under it
+own name, "Forgejo Push & Porter Theme Demo," with the theme's tagline,
+"Commits on tap," under it
 (`demo/templates`). It's thrown away and rebuilt on every deploy from this
 repository: `demo/app.ini` holds its settings and `demo/seed.mjs` its people
 (Andrew Carnegie, Margaret Morrison and Andrew Mellon), repositories, issues,
@@ -136,7 +135,7 @@ Actions are off; the seed works through a one-time admin token. The web
 server in front also blocks the sign-in pages and everything but reading and
 cloning: only GET and HEAD reach Forgejo, plus git's `upload-pack` for
 clones. It serves the service description at the site's root and passes
-`/demo/` to Forgejo with the prefix taken off. The demo uses `demo/theme-hamerschlag-demo.css`, the theme without
+`/demo/` to Forgejo with the prefix taken off. The demo uses `demo/theme-push-and-porter-demo.css`, the theme without
 its Sign In links.
 
 ### Run It Locally
@@ -145,7 +144,7 @@ its Sign In links.
 the service description with a local Jekyll & Plaid checkout:
 
 ```sh
-dev/site.sh        # builds site/_site
+dev/site.sh        # builds docs/_site
 dev/run.sh up
 dev/run.sh seed
 dev/run.sh serve   # http://127.0.0.1:3710/ and the demo at /demo/
@@ -153,6 +152,10 @@ dev/run.sh refresh # after node scripts/build.mjs
 dev/run.sh down
 dev/run.sh reset   # throw the data away
 ```
+
+To see an unreleased Web Kilt change on the local copy, run
+`npm run preview -- --proxy http://127.0.0.1:3710` in a Web Kilt checkout
+and open http://127.0.0.1:4100/.
 
 To look at signed-in pages on your own machine, start it with `SIGNIN=1`
 (`SIGNIN=1 dev/run.sh up`, then `SIGNIN=1 dev/run.sh seed`, which prints a
@@ -177,19 +180,14 @@ password for `ac00`). The hosted demo never uses it. Data stays in
 - **The template's element rules.** Images, tables, video and iframes keep
   their size and alignment attributes, so the theme reverts only the
   template's own rules for them, as of `main.6.7.min.css`. Check that list in
-  `src/theme-hamerschlag.css` when the template changes.
+  `src/theme-push-and-porter.css` when the template changes.
 - **No menu in the roof.** The template's search and site menu aren't used;
   Forgejo's menu bar does that job.
 
 ## Service Description and Releases
 
-`site/` is the service description, built with
-[Jekyll & Plaid](https://jekyllandplaid.andrew.cmu.edu/). On a version tag,
-`.github/workflows/release.yml` attaches the theme as
-`hamerschlag-<version>.zip` and the built site as `site.tar.gz` to the
-release.
-
-## License
-
-BSD 3-Clause. See `LICENSE`. The license doesn't cover Carnegie Mellon's
-names, marks, Scotty artwork or web template; see `src/img/NOTICE.md`.
+`docs/` is the service description, built with
+[Jekyll & Plaid](https://themes.andrew.cmu.edu/jekyll-and-plaid/). Push a version
+tag, then create its GitHub release with its notes;
+the [Attach Release Files workflow](.github/workflows/attach-release-files.yml) waits for the release and attaches the theme
+as `push-and-porter-<version>.zip` and the built site as `site.tar.gz`.

@@ -1,5 +1,5 @@
-/* Hamerschlag: a light Forgejo theme on CMU's web template and the Carnegie
-   Mellon Web Kilt. Built by scripts/build.mjs from src/theme-hamerschlag.css;
+/* Push & Porter: a light Forgejo theme on CMU's web template and the Carnegie
+   Mellon Web Kilt. Built by scripts/build.mjs from src/theme-push-and-porter.css;
    edit the source, not custom/.
 
    It starts from Forgejo's own light theme and changes only what CMU's look
@@ -8,12 +8,12 @@
    loads here in a cascade layer: every rule of Forgejo's wins over it, a
    guard layer turns it off outside the header and footer, and inside them it
    wins over Forgejo's. No script. */
-@layer cmu-template, hamerschlag-guard;
+@layer cmu-template, push-and-porter-guard;
 @import url("./theme-forgejo-light.css");
 @import url("https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css") layer(cmu-template)
   screen;
 
-/* From the Web Kilt 0.6.9's cmu-cms.css */
+/* From the Web Kilt 0.8.9's cmu-cms.css */
 :root {
   --cmu-red: #c41230;
   --cmu-ink: #22262a;
@@ -146,8 +146,8 @@
    that can carry them get only the template's own element rules reverted:
    img, table, td, th, video and iframe, as of main.6.7. Check this list when
    the template changes. */
-@layer hamerschlag-guard {
-  @scope (html) to (.hamerschlag-template) {
+@layer push-and-porter-guard {
+  @scope (html) to (.push-and-porter-template) {
     :not(
         svg,
         svg *,
@@ -220,15 +220,15 @@
    way to it (revert-layer drops this page's unlayered rules, Forgejo's among
    them, back to the template's layer). Their text starts from the browser's default size, as on a
    template page, not Forgejo's 14px. */
-.hamerschlag-template.hamerschlag-template :is(*, *::before, *::after) {
+.push-and-porter-template.push-and-porter-template :is(*, *::before, *::after) {
   all: revert-layer;
 }
-.hamerschlag-template {
+.push-and-porter-template {
   font-size: medium;
   line-height: normal;
 }
-.hamerschlag-template + .page-footer,
-.page-footer + .hamerschlag-template {
+.push-and-porter-template + .page-footer,
+.page-footer + .push-and-porter-template {
   margin-top: 0;
 }
 
@@ -332,7 +332,7 @@ overflow-menu.ui.menu .overflow-menu-items {
    Elsewhere it keeps only its red outline: the text and icons keep their own
    colors, as on the Kilt's pages. */
 .full.height > :not(#container),
-body > :not(.full.height, .hamerschlag-template) {
+body > :not(.full.height, .push-and-porter-template) {
   --focus-state-bg-color: transparent;
   --focus-state-text-color: currentcolor;
 }
@@ -344,8 +344,8 @@ body > :not(.full.height, .hamerschlag-template) {
    roof's height (2.4375em wide, 3.375em on phones, as of main.6.7). The rest
    of the bar (Licenses, API, custom footer links) is hidden; link those from
    your own pages if you need them. */
-.hamerschlag-template .roof {
-  anchor-name: --hamerschlag-roof;
+.push-and-porter-template .roof {
+  anchor-name: --push-and-porter-roof;
 }
 .page-footer {
   min-height: 0 !important;
@@ -385,7 +385,7 @@ body > :not(.full.height, .hamerschlag-template) {
 }
 @supports (anchor-name: --a) {
   .page-footer .ui.dropdown.language {
-    position-anchor: --hamerschlag-roof;
+    position-anchor: --push-and-porter-roof;
     top: anchor(top);
     height: anchor-size(height);
   }

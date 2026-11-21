@@ -3,4 +3,4 @@ node_modules/
 dev/data/
 
 # The built service description
-site/_site/
+docs/_site/

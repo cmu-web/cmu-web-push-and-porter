@@ -1,15 +1,18 @@
-# Hamerschlag's service description, at https://hamerschlag.andrew.cmu.edu/.
-# Built with Jekyll & Plaid; the release workflow attaches it as
-# site.tar.gz. The live demo is at /demo/, a Forgejo running the theme.
+# Push & Porter's service description for line 0 (the Web Kilt line it's built
+# on), at https://themes.andrew.cmu.edu/push-and-porter/0/. Built with Jekyll &
+# Plaid; the Attach Release Files workflow attaches it as site.tar.gz. The live
+# demo is at /push-and-porter/0/demo/, a Forgejo running the theme.
 remote_theme: cmu-web/cmu-web-jekyll-and-plaid
-title: Hamerschlag
-description: A Forgejo theme in CMU style
-url: https://hamerschlag.andrew.cmu.edu
+title: Push & Porter
+description: Commits on tap
+url: https://themes.andrew.cmu.edu
 cmu:
   github_link: true
-  preview_alt: "Hamerschlag's home page: a Forgejo theme in CMU style, with a screenshot of the demo."
+  # This docs site only, never the theme
+  google_tag: GTM-T4C2WLLG
+  preview_alt: "Push & Porter's home page: a Forgejo theme in CMU style, with a screenshot of the demo."
   nav_links:
     - title: Demo
-      url: /demo/
+      url: https://themes.andrew.cmu.edu/push-and-porter/0/demo/
       tab: true
 exclude: [vendor, Gemfile, Gemfile.lock, README.md]

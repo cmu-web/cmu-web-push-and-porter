@@ -1,4 +1,4 @@
-// Serves the built service description (site/_site) at / and the local demo
+// Serves the built service description (docs/_site) at / and the local demo
 // Forgejo at /demo/, as nginx does on the server: the /demo/ prefix comes off
 // before Forgejo sees the request. Local only.
 //
@@ -9,7 +9,7 @@ import { extname, join, normalize } from "node:path";
 
 const port = Number(process.argv[2] || 3710);
 const forgejo = Number(process.argv[3] || 3700);
-const root = join(new URL("..", import.meta.url).pathname, "site/_site");
+const root = join(new URL("..", import.meta.url).pathname, "docs/_site");
 const types = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".json": "application/json", ".xml": "application/xml", ".txt": "text/plain" };
 
 createServer((req, res) => {
