@@ -107,13 +107,15 @@ https://themes.andrew.cmu.edu/push-and-porter/0/#agent (its source is `docs/inde
 ## Update the Kilt or Forgejo
 
 `scripts/build.mjs` builds `custom/` from `src/`. It reads the Kilt's colors
-from the pinned Kilt release on jsDelivr, and Forgejo's English labels from
+from the installed Kilt (`@cmu-web/kilt`), and Forgejo's English labels from
 the pinned Forgejo version's source, then changes only the labels listed in
-`src/locale/title-case.json`. It stops if one of them is gone. To move to a
-new Kilt or Forgejo, change `KILT` or `FORGEJO` in the script, then:
+`src/locale/title-case.json`. It stops if one of them is gone. For a new Kilt,
+upgrade the package (Dependabot proposes each release); for a new Forgejo,
+change `FORGEJO` in the script. Then:
 
 ```sh
-node scripts/build.mjs
+npm ci
+npm run build
 ```
 
 Edit `src/`, never `custom/`, then rebuild. Commit both, so an admin can copy
@@ -148,7 +150,7 @@ dev/site.sh        # builds docs/_site
 dev/run.sh up
 dev/run.sh seed
 dev/run.sh serve   # http://127.0.0.1:3710/ and the demo at /demo/
-dev/run.sh refresh # after node scripts/build.mjs
+dev/run.sh refresh # after npm run build
 dev/run.sh down
 dev/run.sh reset   # throw the data away
 ```

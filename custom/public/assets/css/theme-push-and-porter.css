@@ -13,7 +13,7 @@
 @import url("https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css") layer(cmu-template)
   screen;
 
-/* From the Web Kilt 0.8.9's cmu-cms.css */
+/* From the Web Kilt 0.8.24's cmu-cms.css */
 :root {
   --cmu-red: #c41230;
   --cmu-ink: #22262a;
@@ -33,6 +33,15 @@
   --cmu-link: #941120; /* the template's link color */
   --cmu-link-hover: #f00;
   --cmu-blue-tint: #e9eff7;
+  /* Caution tape, gold and ink, for something not yet for real: a
+     development copy (cmu-site-bar--tape) or Developer Sign-In */
+  --cmu-tape: repeating-linear-gradient(
+    -45deg,
+    var(--cmu-gold) 0 0.75rem,
+    var(--cmu-ink) 0.75rem 1.5rem
+  );
+  /* The soft shadow under a card, callout or window */
+  --cmu-shadow: 0 6px 18px rgba(23, 44, 75, 0.12);
   /* Checkboxes, radio buttons, sliders and progress bars in CMU red instead
      of the browser's blue */
   accent-color: var(--cmu-red);

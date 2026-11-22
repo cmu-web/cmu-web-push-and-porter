@@ -1,21 +1,23 @@
 // Builds the theme into custom/, the folder a Forgejo admin copies into
 // Forgejo's custom path:
 //   * the theme CSS, with the Kilt's design tokens (its :root block) from the
-//     pinned Kilt release on jsDelivr
+//     installed Kilt (@cmu-web/kilt in package.json)
 //   * the header and footer templates
 //   * Scotty as the default avatar
 //   * Forgejo's English locale with its labels in Title Case, from the pinned
 //     Forgejo version's source (a custom locale file replaces Forgejo's whole
 //     file, so it's rebuilt for every Forgejo version)
 //
-// A new Kilt or Forgejo is a one-line change here and a rebuild:
-//   node scripts/build.mjs
+// A new Kilt is an npm upgrade (Dependabot proposes each release) and a
+// rebuild; a new Forgejo is a one-line change here and a rebuild:
+//   npm run build
 import { copyFileSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 
-export const KILT = "0.8.9";
+const require = createRequire(import.meta.url);
+export const KILT = require("@cmu-web/kilt/package.json").version;
 export const FORGEJO = "17.0.1";
-const KILT_CSS = `https://cdn.jsdelivr.net/gh/cmu-web/cmu-web-kilt@${KILT}/css`;
 const FORGEJO_SRC = `https://codeberg.org/forgejo/forgejo/raw/tag/v${FORGEJO}`;
 const root = join(dirname(new URL(import.meta.url).pathname), "..");
 
@@ -31,7 +33,7 @@ function write(path, text) {
 }
 
 // The theme CSS and templates
-const cms = await get(`${KILT_CSS}/cmu-cms.css`);
+const cms = readFileSync(require.resolve("@cmu-web/kilt/css/cmu-cms.css"), "utf8");
 const tokens = cms.match(/^:root \{\n[\s\S]*?\n\}/m);
 if (!tokens) throw new Error("No :root block in cmu-cms.css");
 const fill = (text) =>

@@ -1,0 +1,11 @@
+{
+  "name": "cmu-web-push-and-porter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "@cmu-web/kilt": "0.8.24"
+  }
+}
