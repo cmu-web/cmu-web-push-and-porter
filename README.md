@@ -125,8 +125,7 @@ Edit `src/`, never `custom/`, then rebuild. Commit both, so an admin can copy
 
 https://themes.andrew.cmu.edu/push-and-porter/0/demo/ runs Forgejo with the theme and
 made-up people and projects. Like any site running the theme, it goes by its
-own name, "Forgejo Push & Porter Theme Demo," with the theme's tagline,
-"Commits on tap," under it
+own name, "Forgejo," with the theme's tagline, "Commits on tap," under it
 (`demo/templates`). It's thrown away and rebuilt on every deploy from this
 repository: `demo/app.ini` holds its settings and `demo/seed.mjs` its people
 (Andrew Carnegie, Margaret Morrison and Andrew Mellon), repositories, issues,
